@@ -8,7 +8,7 @@
 Summary: X.Org X11 developmental X transport library
 Name: xorg-x11-xtrans-devel
 Version: 1.4.0
-Release: 8%{?dist}
+Release: 9%{?dist}
 License: MIT
 URL: http://www.x.org
 BuildArch: noarch
@@ -18,6 +18,9 @@ Source0: https://xorg.freedesktop.org/archive/individual/lib/xtrans-%{version}.t
 # Fedora specific patch
 Patch1: xtrans-1.0.3-avoid-gethostname.patch
 
+Patch2: 0001-Automatically-disable-inet6-transport-if-ipv6-is-dis.patch
+
+BuildRequires: git
 BuildRequires: make
 BuildRequires: pkgconfig
 BuildRequires: xorg-x11-util-macros
@@ -26,8 +29,7 @@ BuildRequires: xorg-x11-util-macros
 X.Org X11 developmental X transport library
 
 %prep
-%setup -q -n xtrans-%{version}
-%patch1 -p1 -b .my-name-is-unix
+%autosetup -S git -n xtrans-%{version}
 
 %build
 # yes, this looks horrible, but it's to get the .pc file in datadir
@@ -52,6 +54,10 @@ make install DESTDIR=$RPM_BUILD_ROOT INSTALL="install -p"
 %{_datadir}/pkgconfig/xtrans.pc
 
 %changelog
+* Tue Jan 13 2026 Michel Dänzer  <mdaenzer@redhat.com> - 1.4.0-9
+- Support ipv6.disable=1, corresponding to c8s
+  Resolves: RHEL-116593
+
 * Tue Aug 10 2021 Mohan Boddu <mboddu@redhat.com> - 1.4.0-8
 - Rebuilt for IMA sigs, glibc 2.34, aarch64 flags
   Related: rhbz#1991688
