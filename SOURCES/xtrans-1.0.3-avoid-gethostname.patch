@@ -8,4 +8,4 @@ diff -up xtrans-1.2.7/Xtransutil.c.jx xtrans-1.2.7/Xtransutil.c
 +	strcpy(hostnamebuf, "unix");
  	networkId = malloc (3 + strlen (transName) +
  	    strlen (hostnamebuf) + strlen (saddr->sun_path));
- 	sprintf (networkId, "%s/%s:%s", transName,
+ 	if (networkId != NULL)
